@@ -1,0 +1,32 @@
+#buttons {
+	margin-top: 10px;
+}
+
+.newButton {
+	margin: 10px;
+	margin-top: 10px;
+}
+.enterCar {
+	margin:10px;
+}
+.add-car {
+	margin: 10px;
+}
+#car-input {
+	padding: 5px;
+	font-size: 18px;
+	border-radius: 5px;
+	border: 2px solid #ff0000;
+}
+.add-car{
+	background-color: #ff0000;
+	border:none;
+	padding: 10px;
+	color: white;
+	border-radius: 5px;
+}
+
+.enterCarBrand {
+	font-size: 18px;
+	color: grey;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Cars!</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+</head>
+
+<body>
+
+    <div class = "container">
+    <div class = "row">
+          <div class = "col-md-4">
+              <div id="buttons">
+              </div>
+          </div>
+          <div class = "col-md-8">
+                
+              <form class = "enterCar">
+                  <label for="enterCar" class ="enterCarBrand">New Car Brand</label>
+                  <input type="text" id="car-input">
+                  <input class="add-car" type="submit" value="Enter a New Car">
+              </form>
+                </div>
+          </div>
+        <div class ="row">
+              <div id="gifs-appear-here">
+              </div>
+        </div>
+        
+      </div>
+
+    </div>
+
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript">
+  var cars = ["honda", "ford", "kia", "jeep"];
+  function makeButtons() {
+        $("#buttons").empty();
+        for (var i = 0; i < cars.length; i++) {
+          var button = $("<button class = 'btn'>");
+          button.addClass("newButton");
+          button.attr("data-name", cars[i]);
+          button.text(cars[i]);
+          $("#buttons").append(button);
+        }
+      }
+makeButtons();
+    $(".add-car").on("click", function(event) {
+        event.preventDefault();
+        var carInput = $("#car-input").val();
+        cars.push(carInput);
+        makeButtons();
+
+      });
+
+    $(document).on("click", ".newButton", function() {
+      var car = $(this).attr("data-name");
+      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        car + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        .done(function(response) {
+          var results = response.data;
+          for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div class='item'>");
+            var rating = results[i].rating;
+            var p = $("<p>").text("Rating: " + rating);
+            var carImage = $("<img class = 'newCar'>");
+            carImage.attr("src", results[i].images.fixed_height_still.url);
+            carImage.attr('data-animate', results[i].images.fixed_height.url);
+            carImage.attr('data-state', "still");
+            carImage.attr('data-still', results[i].images.fixed_height_still.url);
+            gifDiv.append(p);
+            gifDiv.append(carImage);
+
+            $("#gifs-appear-here").prepend(gifDiv);
+          }
+        });
+    });
+
+    $(document).on("click", '.newCar', function(){
+
+        var state = $(this).attr('data-state');
+                  
+                
+        if (state === "still") {
+              $(this).attr("src", $(this).attr("data-animate"));
+              $(this).attr("data-state", "animate");
+        } else {
+              $(this).attr("src", $(this).attr("data-still"));
+              $(this).attr("data-state", "still");
+        }
+    });
+  </script>
+</body>
+
+</html>
+
